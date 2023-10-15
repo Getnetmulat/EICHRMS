@@ -33,9 +33,7 @@ class DepartmentView:
                 'Salary' : request.form['Salary'],
                 'Description': request.form['Description'],
                 'date_registered':date.today()})
-                # Department.add_department(
-                #     {'deptName':dept,
-                #     'date_registered':date.today()})
+                
 
             flash("Successfully Registerd", 'success')
 

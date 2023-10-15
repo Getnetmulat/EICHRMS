@@ -1,6 +1,4 @@
 from models.modules import *
-
-# Initialize the SQLAlchemy data store and Flask-Security.
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 # Blueprint Configuration
 user_mg_bp = Blueprint(
