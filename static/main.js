@@ -31,31 +31,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
 
-  /* Show unread Notification   */
-  $('#js-notification-menu').on('click', function(e) {
-  if ($(e.target).parent('div').get(0) === $(this).get(0)
-      || $(e.target).parent('svg').parent('div').get(0) === $(this).get(0)
-      || $(e.target).get(0) === $(this).get(0)
-  ) {
-    $(this).toggleClass('notifications-visible');    
-  }
-});
-
-$('.notification-remove').on('click', function() {
-  if ($(this).parents('ul').find('li').length === 1) {
-    $(this).parent()
-      .removeClass('important unread')
-      .html('Keine Benachrichtigungen mehr vorhanden.');
-    $('#js-notification-menu').removeClass('notifications-unread');
-    $('.notifications-count').remove();
-  } else {
-    $(this).parent().remove();
-    $('.notifications-count').text($('#js-notification-menu li').length);
-  }
-});
-
-/* end unread notification */
-
   
 //start of multiple form registration javasript //
 $(document).ready(function(){
@@ -475,3 +450,38 @@ function generatePDF() {
        upl.value = "";
     }
 };
+
+
+// JS for pagination from database
+$(document).ready(function () {
+  // Handle pagination link clicks
+  $('.pagination a').on('click', function (e) {
+      e.preventDefault();
+      const url = $(this).attr('href');
+
+      // Fetch the content from the server
+      $.get(url, function (data) {
+          const content = $(data).find('.pagination-content').html();
+          $('.pagination-content').html(content);
+      });
+  });
+});
+
+function updateRowsPerPage() {
+  var selectedRowsPerPage = document.getElementById("maxRows").value;
+  var currentUrl = window.location.href;
+  var newUrl;
+
+  // Check if the URL already contains 'state' parameter
+  if (currentUrl.includes('state=')) {
+      // Update the 'state' parameter value in the URL
+      newUrl = currentUrl.replace(/state=\d+/, 'state=' + selectedRowsPerPage);
+  } else {
+      // Append 'state' parameter to the URL
+      var separator = currentUrl.includes('?') ? '&' : '?';
+      newUrl = currentUrl + separator + 'state=' + selectedRowsPerPage;
+  }
+
+  // Navigate to the new URL
+  window.location.href = newUrl;
+}

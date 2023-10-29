@@ -9,9 +9,9 @@ qualification_bp = Blueprint(
 class qualificationView:
 
     # Route to qualification
-    @qualification_bp.route("/viewqualification/",methods=['POST', 'GET'])
+    @qualification_bp.route("/viewQualification/",methods=['POST', 'GET'])
     @login_required
-    def viewqualification():
+    def viewQualification():
         # Query all list of qualifications
         all_dept = Qualification.query.order_by(Qualification.id.asc())
         if request.method == 'POST':

@@ -10,7 +10,7 @@
     .header{width: 100%;height: var(--header-height);
     position: fixed;top: 0;left: 0;display: flex;
     align-items: center;justify-content: space-between;
-    padding: 0 1rem;background-color: #304458;
+    padding: 0 1rem;background-color: #2C3E50;
     z-index: var(--z-fixed);transition: .5s}.header_toggle{color: #fff;
     font-size: 1.5rem;cursor: pointer}.header_img{width: 35px;height: 35px;
     display: flex;justify-content: center;
@@ -27,105 +27,136 @@
     margin-bottom: 1.5rem;transition: .3s}.nav_link:hover{color: var(--white-color)}.nav_icon{font-size: 1.25rem}.show{left: 0}.body-pd{padding-left: calc(var(--nav-width) + 1rem)}.active{color: var(--white-color)}.active::before{content: '';
     position: absolute;left: 0;width: 2px;height: 32px;background-color: var(--white-color)}.height-100{height: 100vh}@media screen and (min-width: 768px){body{margin: calc(var(--header-height) + 1rem) 0 0 0;padding-left: calc(var(--nav-width) + 2rem)}.header{height: calc(var(--header-height) + 1rem)}.header_img{width: 40px;height: 40px}.header_img img{width: 45px}.l-navbar{left: 0;
     padding: 1rem 1rem 0 0}.show{width: calc(var(--nav-width) + 156px)}.body-pd{padding-left: calc(var(--nav-width) + 188px)}}.dropdown-toggle::after{margin-left: 0}
-
-
-    .icon-button {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 50px;
-      color: #333333;
-      background: #dddddd;
-      border: none;
-      outline: none;
-      border-radius: 50%;
-    }
-    
-    .icon-button:hover {
-      cursor: pointer;
-    }
-    
-    .icon-button:active {
-      background: #cccccc;
-    }
-    
-    .icon-button__badge {
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      width: 25px;
-      height: 25px;
-      background: red;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-    }
-/*unread notification */
-header {
-  font-family: sans-serif;
-  background-color: #2e9bdd;
-  padding: 0 30px;
-  }
-
-.notifications-datetime {
-  font-size: .8rem;
-  font-family: monospace;
-  margin-top: 5px;
-  color: #111;
+#required
+{
+  border-color: red;
+}
+div.topRow {
+  width:100%;
+  clear:both;
+}
+div.leftCol {
+  width:50%;
+  float:left;
+}
+div.rightCol {
+  width:50%;
+  float:right;
 }
 
-.notifications-count {
-  background: red;
-  color: white;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  line-height: 20px;
-  font-size: .8rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  border-radius: 50%;
-  font-weight: 700;
+select
+{
+font-family:Georgia, "Abyssinica_SIL New Roman", Abyssinica_SIL, serif;
+font-size:16px;
+text-align: inherit;
+}
+.required_star {
+font-weight:bold;
+color:#F00;
+}
+.Optional {
+font-weight:bold;
+color:blue;
+}
+/* css designing the plan percentage dashboard */
+#grid {
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  display: grid;
+}
+.clearfix:before,.clearfix:after {
+  content: " ";
+  display: table;}
+
+.clearfix:after {clear: both;}
+.clearfix {*zoom: 1;}
+
+/* end of plan dashboard */
+
+
+
+/*custom font*/
+fieldset.scheduler-border {
+  border: 1px groove #ddd !important;
+  padding: 0 1.4em 1.4em 1.4em !important;
+  margin: 0 0 1.5em 0 !important;
+  -webkit-box-shadow:  0px 0px 0px 0px #000;
+          box-shadow:  0px 0px 0px 0px #000;
 }
 
-.notifications {
-  position: relative;
-  display: inline-block;
-  width: 2rem;
-  text-align: center;
-  padding: 8px 4px 4px;
-  cursor: pointer;
+legend.scheduler-border {
+  font-size: 1.2em !important;
+  font-weight: bold !important;
+  text-align: left !important;
 }
-  
-  .notifications-listwrapper {
-    position: absolute;
-    top: 140%;
-    right: 0;
-    transform: scale(0);
-    transform-origin: 100% 0;
-  }
-  
-  .notifications-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 400px;
-    overflow: auto;
-  }
-  
-  svg {
-    width: 24px;
-    height: 24px;
-  }
+/*basic reset*/
+* {margin: 0; padding: 0;}
 
+html {
+	height: 100%;
+	/*Image only BG fallback*/
+}
 
+body {
+	font-family: montserrat, arial, verdana;
+}
+h1{
+  font-size: clamp(40px, 8vw, 105px);
+}
+/*form styles*/
+#msform {
+	width:100%;
+	margin: 10px auto;
+	text-align: center;
+	position: relative;
+}
+#msform fieldset {
+	background: white;
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 10px 10px;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0 10%;
+
+	/*stacking fieldsets above each other*/
+	position: relative;
+}
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+	display: none;
+}
+/*inputs*/
+#msform input, #msform textarea {
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 13px;
+}
+/*buttons*/
+#msform .action-button {
+	width: 100px;
+	background: #27AE60;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px 5px;
+	margin: 10px 5px;
+}
+#msform .action-button:hover, #msform .action-button:focus {
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+}
 /*headings*/
 .fs-title {
 	font-size: 15px;
@@ -188,6 +219,10 @@ header {
 	background: #27AE60;
 	color: white;
 }
+
+
+
+
 /*  start multiple form registration css ----- */
 * {
   margin: 0;
@@ -226,7 +261,7 @@ p {
 }
 
 .form-card {
-  text-align: center
+  text-align: left
 }
 #msform input,
 #msform textarea {
@@ -427,12 +462,12 @@ body {
 *:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box;
+   box-sizing: border-box;
 }
 .bg-primary, .navbar-dark{
   background-color: #f4f4f4;
 }
-/* css design chart */
+/* css design chart *//
 .chart{
   width:5%;
   height: 5%;
@@ -524,7 +559,6 @@ body {
   padding: 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-  font-family: 'Times New Roman', Times, serif;
 }
 .form input {
   font-family: "Roboto", sans-serif;
@@ -673,17 +707,11 @@ input{
   width: 100%; /* Full-width */
   border: 1px solid #ddd; /* Add a grey border */
   font-size: 16px; /* Increase font-size */
-  font-family: 'Times New Roman', Times, serif;
 }
-
-p {
-  font-size: 18px;
-  font-family: Times;
+td, th{
+vertical-align: middle;
+ /* center checkbox vertically */
 }
-hr {
-  background-color:#27ae60
-}
-
 /* css for sticky footer */
 
   .footer {
@@ -738,7 +766,7 @@ hr {
 
 /* Add styles to the form container */
 .form-container {
-  max-width: 100%;
+  max-width: 300px;
   padding: 10px;
   background-color: white;
 }
@@ -833,4 +861,39 @@ hr {
     position: absolute;
     right: 10px;
     top: 0;
+}
+
+
+section.percentage-bar:first-child div.title { background: #9e1e1e; }
+section.percentage-bar:first-child div.bar { background: #dd2828; }
+
+section.percentage-bar:nth-child(2) div.title { background: #d35400; }
+section.percentage-bar:nth-child(2) div.bar { background: #e67e22; }
+
+section.percentage-bar:nth-child(3) div.title { background: #27ae60; }
+section.percentage-bar:nth-child(3) div.bar { background:  #2ecc71; }
+
+section.percentage-bar:nth-child(4) div.title { background: #2980b9; }
+section.percentage-bar:nth-child(4) div.bar { background: #3498db; }
+
+section.percentage-bar:nth-child(5) div.title { background: #561e9e; }
+section.percentage-bar:nth-child(5) div.bar { background: #6f37db; }
+
+section.percentage-bar:last-child div.title { background: #333333; }
+section.percentage-bar:last-child div.bar { background: #525252; }
+
+
+.grid-container {
+  display: grid;
+  grid-auto-columns: 100%;
+  grid-gap: 10px;
+  background-color: #2196F3;
+  padding: 10px;
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
 }

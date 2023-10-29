@@ -15,6 +15,7 @@ class Employee(db.Model):
     lname = db.Column(db.String(100))
     gender = db.Column(db.String(100))
     age = db.Column(db.String(100))
+    qualification = db.Column(db.String(100))
     contact_add = db.Column(db.String(100))
     emp_email = db.Column(db.String(100))
     emp_pass = db.Column(db.String(100))
@@ -24,7 +25,7 @@ class Employee(db.Model):
     # employee =  db.relationship('CollageID', backref='collage_employee', lazy = True)
     # employee =  db.relationship('branchID', backref='branch_employee', lazy = True)
     
-    def __init__(self, collageID, branchID, deptID, positionID, fname, lname, gender, age, contact_add, emp_email, emp_pass, photo, date_r):
+    def __init__(self, collageID, branchID, deptID, positionID, fname, lname, gender, age,qualification, contact_add, emp_email, emp_pass, photo, date_r):
         self.collageID = collageID
         self.branchID = branchID
         self.deptID = deptID
@@ -33,6 +34,7 @@ class Employee(db.Model):
         self.lname = lname
         self.gender = gender
         self.age = age
+        self.qualification = qualification
         self.contact_add = contact_add
         self.emp_email = emp_email
         self.emp_pass = emp_pass
@@ -49,6 +51,7 @@ class Employee(db.Model):
         lname = emp_dict['lname'],
         gender = emp_dict['gender'],
         age = emp_dict['age'],
+        qualification = emp_dict['qualification'],
         contact_add = emp_dict['contact_add'],
         emp_email = emp_dict['emp_email'],
         emp_pass = emp_dict['emp_pass'],

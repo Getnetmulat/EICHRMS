@@ -23,17 +23,18 @@
           New Employee Register
           <a href="{{url_for('employee_bp.newEmployee')}}" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></a>
         </div>
-        <div class="card-body form-container">
-          <form class="row mb-3"  action="{{url_for('employee_bp.register_employee')}}" method="POST" enctype="multipart/form-data">
-            <div class="col-md-4">
+      
+          <form action="{{url_for('employee_bp.register_employee')}}" method="POST" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <div class="col-md-3">
               <label for="inputfname" class="col-form-label">First Name፡</label>
               <input type="text" class="form-control" name="fname" required>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label for="inputfname" class="col-form-label">Middle Name:</label>
               <input type="text" class="form-control" name="lname" required>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <div class="form-group">
                   <label for="gender" class="col-form-label required">Gender:</label>
                   <div class="form-group">
@@ -44,20 +45,35 @@
                   </div>
               </div>
           </div>
-          <div class="col-md-2"> 
+          <div class="col-md-3"> 
             <div class="form-group">
                 <label for="inputage" class="col-form-label required">Age</label>
                 <input type="number" class="form-control" name ="age"  required>
             </div>
         </div>
-        <div class="col-md-4">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
           <div class="form-group">
               <label for="inputEmail" class="col-form-label">Email</label>
               <input type="email" class="form-control" name="emp_email" placeholder="" >
           </div>
       </div>
-      
-            <div class="col-md-4">
+        <div class="col-md-3"> 
+          <div class="form-group">
+              <label for="inputage" class="col-form-label required">Qualification</label>
+              <select id="qualification" class="form-select" style="color: #000; background: ;" name ="qualification" required>
+                <option  selected>Seelct...</option>                
+                <option value="professor">professor</option>
+                <option value="phD">phD</option>
+                <option value="Masters">Masters</option>
+                <option value="Digree">Digree</option>
+                <option value="Diploma">Diploma</option>
+                <option value="Others">Others</option>                
+              </select>
+          </div>
+      </div>  
+            <div class="col-md-3">
               <label for="inputDept" class="col-form-label">Department፡</label>
               <select id="departments" class="form-select" style="color: #000; background: ;" name ="deptID" required>
                 <option  selected>Seelct...</option>
@@ -66,8 +82,8 @@
                 {% endfor %}
               </select>
             </div>
-            
-            <div class="col-md-4">
+          
+            <div class="col-md-3">
               <label for="inputRole" class="col-form-label">Position፡</label>
               <select id="positions" class="form-select" style="color: #000; background:;" name ="positionID" required>
                 <option selected>Select...</option>
@@ -76,16 +92,18 @@
                 {% endfor %}
               </select>
             </div>
-            <div class="col-md-4">
+          </div>
+          <div class="row mb-3">  
+            <div class="col-md-3">
               <label for="inputcontact_add" class="col-form-label">Contact Address:</label>
               <input type="number" class="form-control" name ="contact_add" required>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label for="inputemp_pass" class="col-form-label">Password፡</label>
               <input type="password" class="form-control" name ="emp_pass" required>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label for="formFile" class="col-form-label">Photo፡</label>
               <input class="form-control" type="file" name="photo" id="file", accept=".png,.jpeg,.jpg" required>
             </div>

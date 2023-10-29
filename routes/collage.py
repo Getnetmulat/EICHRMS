@@ -1,4 +1,5 @@
 from models.modules import *
+import exc
 ## Blueprint Configuration
 collage_bp = Blueprint(
     'collage_bp', __name__,

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% include 'inc/header.html' %}
+{% extends "layouts/base.html" %}
+{% block title %}  {% endblock title %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+      <!--Add a flash message that display a successful message while adding new record -->
+      {% with  messages = get_flashed_messages(with_categories = true)  %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div id="alert-success" class="alert alert-{{ category }} alert-dismissible show" role="alert">
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <div class="col-md-9" style="padding:10px;">
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="list-group">
+              <h5 class="card-title">Import Employee Data from Excel (xls and xlsx only)
+              <a href="/employeeDetail/" type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></a></h5>
+              <form class="form-control" action="/saveData/" method="post" enctype="multipart/form-data">
+                <div class="cart-text">
+                  <input type="file" required name="excel_file" value="" accept=".xls, .xlsx">
+                </div>
+                <h6><a href= "{{ url_for('static', filename='Excel/employee.xlsx') }}" alt="" width="" height="30">To Import Employee use this Excel Sheet</a></image></h6>
+                  <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+              </form>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'inc/footer.html' %}
+<!--inline JS -->
+
+<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+
+{% endblock body %}

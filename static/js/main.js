@@ -784,3 +784,41 @@ function generatePDF() {
        upl.value = "";
     }
 };
+
+
+// JS for pagination from database
+$(document).ready(function () {
+  // Handle pagination link clicks
+  $('.pagination a').on('click', function (e) {
+      e.preventDefault();
+      const url = $(this).attr('href');
+
+      // Fetch the content from the server
+      $.get(url, function (data) {
+          const content = $(data).find('.pagination-content').html();
+          $('.pagination-content').html(content);
+      });
+  });
+});
+
+function updateRowsPerPage() {
+  var selectedRowsPerPage = document.getElementById("maxRows").value;
+  var currentUrl = window.location.href;
+  var newUrl;
+
+  // Check if the URL already contains 'state' parameter
+  if (currentUrl.includes('state=')) {
+      // Update the 'state' parameter value in the URL
+      newUrl = currentUrl.replace(/state=\d+/, 'state=' + selectedRowsPerPage);
+  } else {
+      // Append 'state' parameter to the URL
+      var separator = currentUrl.includes('?') ? '&' : '?';
+      newUrl = currentUrl + separator + 'state=' + selectedRowsPerPage;
+  }
+
+  // Navigate to the new URL
+  window.location.href = newUrl;
+}
+
+
+

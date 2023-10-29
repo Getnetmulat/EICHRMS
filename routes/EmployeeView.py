@@ -1,5 +1,11 @@
-# Route to insert ComplainIssue
+# Route to insert EmployeeIssue
 from models.modules import *
+import os
+import secrets
+from sqlalchemy import or_, outerjoin, and_,  cast, Date
+from sqlalchemy.exc import SQLAlchemyError
+from PIL import Image
+import pandas as pd
 # Blueprint Configuration
 employee_bp = Blueprint(
     'employee_bp', __name__,
@@ -38,44 +44,40 @@ def get_values():
 
     return list_values
 
+def query_employees_for_user(page, per_page, search_term=None):
+    collage_id_branch = session.get('collage_id_branch')
+    query = db.session.query(Employee, Collage, Department, Position)
+
+    if current_user.has_role('super-admin'):
+        query = query.select_from(Employee).join(Collage, Collage.id == Employee.collageID) \
+            .join(Department, Department.id == Employee.deptID) \
+            .join(Position, Position.id == Employee.positionID) \
+            .order_by(Employee.id.desc())
+        
+    elif current_user.has_role('admin'):
+        query = query.select_from(Employee).join(Collage, Collage.id == Employee.collageID) \
+            .join(Department, Department.id == Employee.deptID) \
+            .join(Position, Position.id == Employee.positionID) \
+            .filter(Employee.collageID == collage_id_branch) \
+            .order_by(Employee.id.desc())
+    # Ensure the query always returns a list even if no results found
+    return query.order_by(Employee.id.desc()).paginate(page=page, per_page=per_page, error_out=False)
 # route to EmployeeDetail
 @employee_bp.route('/employeeDetail/',methods=['POST', 'GET'])
 @login_required
 def employeeDetail():
-    # Get the selected number of rows per page from the dropdown menu
-    per_page = int(request.args.get('state', 5))  # Default to 10 rows per page if not selected
-
-    # Get the current page number from the query parameters
-    page = request.args.get('page', 1, type=int)
-    try:
-        selected_values = get_values()
-        # Query all data from database
-        if current_user.has_role('super-admin'):
-            all_emp = db.session.query(Employee,Department,Position, Collage).select_from(Employee).join(
-                Department, Department.id == Employee.deptID
-            ).join(Position, Position.id == Employee.positionID).\
-                join(Collage, Collage.id == Employee.collageID).all()
-
-
-        else:
-            all_emp = db.session.query(Employee,Department,Position, Branch).select_from(Employee).join(
-                Department, Department.id == Employee.deptID
-            ).join(Position, Position.id == Employee.positionID).\
-                join(Branch, Branch.id == Employee.branchID).\
-                filter(Employee.collageID==session['collage_id_branch']).\
-                paginate(page=page, per_page=per_page, error_out=False)
-                # (Employee.wereda_id == session['wereda_id'])).\
+    if request.method == 'GET':
+        per_page = int(request.args.get('state', 5))
+        page = request.args.get('page', 1, type=int)
+        employee_list = db.session.query(Employee).order_by(Employee.id.desc()).\
+            paginate(page=page, per_page=per_page,error_out=False)
             
+        all_emp = db.session.query(Employee,Department,Position, Collage).select_from(Employee).join(
+                Department, Department.id == Employee.deptID
+            ).join(Position, Position.id == Employee.positionID).\
+                join(Collage, Collage.id == Employee.collageID).all()  
+    return render_template('employeeDetail.html', employees = all_emp, employee_list = employee_list, rows_per_page=per_page)
 
-        depts = Department.query.order_by(Department.id.desc())
-        pos = Position.query.order_by(Position.id.desc())
-        return render_template('employeeDetail.html', employees = all_emp, departments = selected_values[0], roles = selected_values[1],  rows_per_page = per_page)
-
-    except IndexError:
-        flash("First Select Department")
-        return redirect(url_for('dashboard'))
-
-# route to newEmployee.html page
 @employee_bp.route('/newEmployee/',methods=['POST', 'GET'])
 @login_required
 def newEmployee():
@@ -87,7 +89,7 @@ def newEmployee():
 
     depts = Department.query.order_by(Department.id.desc())
     pos = Position.query.order_by(Position.id.desc())
-    return render_template('newEmployee.html', employees = all_emp, departments = selected_values[0], roles = selected_values[1])
+    return render_template('newEmployee.html', depts =depts, pos=pos, employees = all_emp, departments = selected_values[0], roles = selected_values[1])
 
 # Render the pictures
 def save_picture(form_picture):
@@ -100,7 +102,6 @@ def save_picture(form_picture):
     i.thumbnail(output_size)
     i.save(picture_path)
     return picture_fn
-
 
 @employee_bp.route("/register_employee/",methods=['POST', 'GET'])
 @login_required
@@ -122,8 +123,9 @@ def register_employee():
         fname = request.form['fname']
         lname = request.form['lname']
         gender = request.form['gender']
-        age = request.form['age']
-        emp_email = request.form['emp_email']
+        fname = request.form['fname']
+        qualification = request.form['qualification']
+        emp_name = request.form['emp_name']
         contact_add = request.form['contact_add']
         emp_pass = request.form['emp_pass']
         pic = save_picture(request.files['photo'])
@@ -132,9 +134,9 @@ def register_employee():
         # add employee to database
         Employee.add_employee(
         {'deptID':deptID,
-        'positionID':positionID, 'collageID':session['collage_id_branch'], 'branchID': branch_id,
+        'positionID':positionID, 'collfnameID':session['collfname_id_branch'], 'branchID': branch_id,
         'fname':fname, 'lname':lname,
-        'gender':gender, 'age':age,'emp_email':emp_email, 'emp_pass':emp_pass,
+        'gender':gender, 'fname':fname,'qualification':qualification,'emp_name':emp_name, 'emp_pass':emp_pass,
         'contact_add':contact_add,'photo':pic, 'date_registered':date_r})
 
         flash("Registration Successfully", 'success')
@@ -144,7 +146,7 @@ def register_employee():
 
         return render_template('register_employee.html')
 
-# Edit Employee Profile and redirect to editEmployee page
+# Edit Employee Profile and redirect to editEmployee pfname
 @employee_bp.route("/editEmployee/<int:id>",methods=['POST', 'GET'])
 @login_required
 def editEmployee(id):
@@ -170,8 +172,9 @@ def updateEmployee():
     empl_data = request.form['fname']
     empl_data = request.form['lname']
     empl_data = request.form['gender']
-    empl_data = request.form['age']
-    empl_data = request.form['emp_email']
+    empl_data = request.form['fname']
+    empl_data =request.form['qualification']
+    empl_data = request.form['emp_name']
     empl_data = request.form['contact_add']
     # empl_data = request.form['emp_pass']
     # update picture if picture uploaded
@@ -200,12 +203,61 @@ def deleteEmployee(id):
     if request.method=='GET':
         deleted_emp = Employee.query.get(id)
         # excetion can't delete if appointment data available under this employee
+        # try:
+
+        db.session.delete(deleted_emp)
+        db.session.commit()
+        flash('1 Data Deleted', 'danger')
+        return redirect(url_for('employee_bp.employeeDetail'))
+
+@employee_bp.route('/importEmployee/', methods = ['POST', 'GET'])
+@login_required
+def importEmployee():
+    return render_template('importEmployee.html')
+    
+@employee_bp.route('/saveData/', methods = ['POST', 'GET'])
+@login_required
+def saveData():
+    if request.method == 'POST':
+        emp_email = request.form.get('lname')
+        user = Employee.query.filter_by(emp_email=emp_email).first() # if this returns a user, then the lname already exists in database
+
+        if user: # if a user is found, we want to redirect back to signup pfname so user can try again
+            flash('Email already Exist')
+            return redirect(url_for('importEmployee', next=request.url))
+
+        data = request.files['excel_file']
+        employee_data = pd.read_excel(data)
+        employee_data1 = employee_data.to_dict('records')
+        
+        i = 1
         try:
 
-            db.session.delete(deleted_emp)
-            db.session.commit()
-            flash('1 Data Deleted', 'danger')
-            return redirect(url_for('employee_bp.employeeDetail'))
-        except exc.IntegrityError:
-            flash('Sorry, There is no Registered Data።', 'danger')
-            return redirect(url_for('employee_bp.employeeDetail'))
+            for employees in employee_data1:
+                # save to database
+                Employee.add_employee({
+                    'collageID': '' if pd.isna(employees['collageID']) else employees['collageID'],
+                    'branchID': '' if pd.isna(employees['branchID']) else employees['branchID'],
+                    'deptID': '' if pd.isna(employees['deptID']) else employees['deptID'],
+                    'positionID': '' if pd.isna(employees['positionID']) else employees['positionID'],
+                    'fname': '' if pd.isna(employees['fname']) else employees['fname'],
+                    'lname': '' if pd.isna(employees['lname']) else employees['lname'],
+                    'gender': '' if pd.isna(employees['gender']) else employees['gender'],
+                    'age': '' if pd.isna(employees['age']) else employees['age'],
+                    'qualification': '' if pd.isna(employees['qualification']) else employees['qualification'],
+                    'contact_add': '' if pd.isna(employees['contact_add']) else employees['contact_add'],
+                    'emp_email': '' if pd.isna(employees['emp_email']) else employees['emp_email'],                    
+                    'emp_pass': '' if pd.isna(employees['emp_pass']) else employees['emp_pass'],
+                    'photo': 'None',
+                    'date_registered': date.today()
+                })
+                i += 1
+            flash("{} Employees Successfully Imported".format(i), 'success')
+            return redirect(url_for('employee_bp.importEmployee', emp_count =employee_data))            
+        except (KeyError, TypeError):
+            flash("Sorry! Please Import the Employee data based on the Excel Format".format(i), 'danger')
+            return redirect(url_for('employee_bp.importEmployee'))
+        except AttributeError as e:
+            flash("The First {} Employee Data Imported. from{} this row {} Please the check the data".format(i, i, e), 'warning')
+            return redirect(url_for('employee_bp.importEmployee'))
+    return render_template('importEmployee.html')

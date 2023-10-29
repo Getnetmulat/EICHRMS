@@ -26,7 +26,7 @@
           Uodate Employee Information
           <a href="{{url_for('employee_bp.employeeDetail')}}" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></a>
         </div>
-        <div class="card-body form-container">
+        
           <form class="row mb-3"  action="{{url_for('employee_bp.updateEmployee')}}" method="POST" enctype="multipart/form-data">
 						{% for row, d, p in emp %}
             <div class="col-md-4">
@@ -47,6 +47,10 @@
               <input type="number" class="form-control" value="{{row.age}}" name ="age" required>
             </div>
             <div class="col-md-4">
+              <label for="inputlname" class="col-form-label">Qualification:</label>
+              <input type="text" class="form-control" value="{{row.qualification}}" name ="qualification" required>
+            </div>
+            <div class="col-md-4">
               <label for="inputlname" class="col-form-label">Email Address:</label>
               <input type="email" class="form-control" value="{{row.emp_email}}" name ="emp_email" required>
             </div>
@@ -63,8 +67,7 @@
                 <option value="{{department}}">{{department}}</option>
                 {% endfor %}
               </select>
-            </div>
-            
+            </div>            
             <div class="col-md-4">
               <label for="inputRole" class="col-form-label">Position Name:</label>
               <select id="positions" class="form-select" style="color: #000;" name ="positionID" required>
@@ -74,7 +77,6 @@
                 {% endfor %}
               </select>
             </div>
-
             <div class="col-md-4">
               <label for="formFile" class="col-form-label">Photo:</label>
               <input class="form-control" type="file" name="photo" id="file", accept=".png,.jpeg,.jpg">

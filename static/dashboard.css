@@ -13,7 +13,7 @@
 	--dk-dark-bg: #313348;
 	--dk-darker-bg: #2a2b3d;
 	--navbar-bg-color: #6f6486;
-	--sidebar-bg-color: #121986;
+	--sidebar-bg-color: #161d7c;
 	--sidebar-width: 250px;
 }
 
@@ -60,7 +60,7 @@ body {
 }
 
 .sidebar .sidebar-header {
-	border-bottom: 1px solid #161a70
+	border-bottom: 1px solid #111571
 }
 
 .sidebar .sidebar-header h5 a {
