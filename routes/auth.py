@@ -25,7 +25,7 @@ def before_first_request():
     encrypted_password = generate_password_hash('Admin@123')
     if not user_datastore.get_user('superadmin@eic.com'):
         # Create default collage for super admin
-        Collage.add_collage({'collageName':'Emerald International Education', 'date_registered':datetime.today()})
+        Collage.add_collage({'collageName':'Emerald International Collage', 'date_registered':datetime.today()})
         user_datastore.create_user(email='superadmin@eic.com', collageID=1, password=encrypted_password)
 
     # Commit any database changes; the User and Roles must exist before we can add a Role to the User
